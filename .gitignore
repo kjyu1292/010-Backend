@@ -8,14 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
-test/
 app/__pycache__/
 archived/
 
 .env.*
 *.override.yml
-test.db
 *.txt
 sketch.MD
-_Dockerfile
 

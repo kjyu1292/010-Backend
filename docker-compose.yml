@@ -12,8 +12,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      name: [backend_net]
+    networks: [backend_net]
 
   postgres:
     image: postgres:16-alpine
@@ -24,8 +23,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      name: [backend_net]
+    networks: [backend_net]
 
   redis:
     image: redis:7-alpine
@@ -35,8 +33,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      name: [backend_net]
+    networks: [backend_net]
 
 volumes:
   postgres_data:

@@ -7,15 +7,15 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from contextlib import asynccontextmanager
 
-from app.database.core import create_db_and_table
+from app.database.core import engine
 from app.auth.router import router, limiter
 
 
 """----------------------------"""
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_db_and_table()
     yield
+    await engine.dispose()
 
 app = FastAPI(lifespan = lifespan)
 app.state.limiter = limiter

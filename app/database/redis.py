@@ -6,12 +6,15 @@ from collections.abc import AsyncGenerator
 from fastapi import Depends
 from redis.asyncio import Redis, from_url
 
-from dotenv import load_dotenv
-load_dotenv()
+import app.environment
 
 
 """----------------------------"""
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL")
+if REDIS_URL is None:
+    raise RuntimeError(
+            f"REDIS_URL is not set in {env_file.name}"
+    )
 redis_pool = from_url(REDIS_URL, decode_responses = True)
 
 

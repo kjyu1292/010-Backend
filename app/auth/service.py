@@ -16,9 +16,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import select
 from redis.asyncio import Redis
 
-from dotenv import load_dotenv
-load_dotenv()
-
+import app.environment
 from app.logging import get_logger
 from app.auth.model import TokenData, RegisterUserRequest
 from app.database.core import userDBSession
@@ -31,8 +29,14 @@ ENCRYPTION_ALGORITHM = os.getenv("ENCRYPTION_ALGORITHM")
 ACCESS_TOKEN_LIFETIME_SECONDS = int(os.getenv("ACCESS_TOKEN_LIFETIME_SECONDS", "1800"))       # 30 min
 REFRESH_TOKEN_LIFETIME_SECONDS = int(os.getenv("REFRESH_TOKEN_LIFETIME_SECONDS", "1209600"))  # 14 days
 
-if not SECRET or not ENCRYPTION_ALGORITHM:
-    raise RuntimeError("SECRET and ENCRYPTION_ALGORITHM must be set in the environment")
+if (not SECRET)
+    | (not ENCRYPTION_ALGORITHM)
+    | (not ACCESS_TOKEN_LIFETIME_SECONDS)
+    | (not REFRESH_TOKEN_LIFETIME_SECONDS):
+    raise RuntimeError(f"""
+            SECRET, ENCRYPTION_ALGORITHM, ACCESS_TOKEN_LIFETIME_SECONDS,
+            and REFRESH_TOKEN_LIFETIME_SECONDS must be set in the environment
+    """)
 
 
 """----------------------------"""

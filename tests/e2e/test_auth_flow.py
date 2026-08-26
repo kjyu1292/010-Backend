@@ -4,12 +4,14 @@ import uuid
 import pytest
 import httpx
 
-from dotenv import load_dotenv
-load_dotenv()
-
+import app.environment
 
 """----------------------------"""
 BASE_URL = os.getenv("E2E_BASE_URL")
+if BASE_URL is None:
+    raise RuntimeError(
+            f"BASE_URL is not set in {env_file.name}"
+    )
 
 
 """----------------------------"""
