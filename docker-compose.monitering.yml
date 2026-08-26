@@ -1,0 +1,46 @@
+# docker-compose.monitoring.yml
+# Run alongside the main stack:
+#   docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
+#
+# Covers what k6 alone can't see: CPU/RAM per container, Postgres connection
+# count, and Redis command latency -- correlate these with the k6 run by
+# watching Grafana while the load test executes.
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks: [backend_net]
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    networks: [backend_net]
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [backend_net]
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter:latest
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@postgres:5432/game_db?sslmode=disable"
+    networks: [backend_net]
+
+  redis_exporter:
+    image: oliver006/redis_exporter:latest
+    environment:
+      REDIS_ADDR: "redis://redis:6379"
+    networks: [backend_net]
+
+networks:
+  backend_net:
+    external: true
+    name: 010_backend_net

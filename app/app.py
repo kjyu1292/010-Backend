@@ -3,10 +3,13 @@ from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from contextlib import asynccontextmanager
 
 from app.database.core import create_db_and_table
 from app.auth.router import router, limiter
+
 
 """----------------------------"""
 @asynccontextmanager
@@ -24,3 +27,7 @@ app.include_router(router, prefix = "/v1")
 @app.get("/health", tags = ["health"])
 async def health():
     return {"status": "ok"}
+
+
+"""----------------------------"""
+Instrumentator().instrument(app = app).expose(app = app)

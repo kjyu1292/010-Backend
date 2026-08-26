@@ -12,8 +12,8 @@ test/
 app/__pycache__/
 archived/
 
-.env
-docker-compose.override.yml
+.env.*
+*.override.yml
 test.db
 *.txt
 sketch.MD
