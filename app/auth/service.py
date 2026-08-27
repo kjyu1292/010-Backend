@@ -29,10 +29,10 @@ ENCRYPTION_ALGORITHM = os.getenv("ENCRYPTION_ALGORITHM")
 ACCESS_TOKEN_LIFETIME_SECONDS = int(os.getenv("ACCESS_TOKEN_LIFETIME_SECONDS", "1800"))       # 30 min
 REFRESH_TOKEN_LIFETIME_SECONDS = int(os.getenv("REFRESH_TOKEN_LIFETIME_SECONDS", "1209600"))  # 14 days
 
-if (not SECRET)
+if ((not SECRET)
     | (not ENCRYPTION_ALGORITHM)
     | (not ACCESS_TOKEN_LIFETIME_SECONDS)
-    | (not REFRESH_TOKEN_LIFETIME_SECONDS):
+    | (not REFRESH_TOKEN_LIFETIME_SECONDS)):
     raise RuntimeError(f"""
             SECRET, ENCRYPTION_ALGORITHM, ACCESS_TOKEN_LIFETIME_SECONDS,
             and REFRESH_TOKEN_LIFETIME_SECONDS must be set in the environment
@@ -40,8 +40,8 @@ if (not SECRET)
 
 
 """----------------------------"""
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login")
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl = "auth/login")
+bcrypt_context = CryptContext(schemes = ["bcrypt"], deprecated = "auto")
 
 logger = get_logger("__name__")
 
