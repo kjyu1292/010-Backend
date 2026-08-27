@@ -11,6 +11,7 @@ wheels/
 app/__pycache__/
 archived/
 
+scripts/
 .env.*
 *.override.yml
 *.txt
