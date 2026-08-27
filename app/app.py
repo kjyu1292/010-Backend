@@ -7,8 +7,9 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from contextlib import asynccontextmanager
 
+from app.limiter import limiter
+from app.auth.router import router
 from app.database.core import engine
-from app.auth.router import router, limiter
 
 
 """----------------------------"""
