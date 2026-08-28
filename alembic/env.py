@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 import app.environment
-from app.database.core import Base
+from app.database import Base
 
 
 """----------------------------"""
