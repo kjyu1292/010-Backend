@@ -79,7 +79,7 @@ async def test_register_rate_limit_kicks_in():
             payload = {
                 "email": f"ratelimit_{tag}@example.com"
                 , "password": "correct-horse-battery-staple"
-                , "display_name": "Rate Limit Test"
+                , "display_name": f"Rate Limit Test {tag}"
                 , "platform": "ios"
             }
             r = await client.post("/v1/auth/register", json=payload)
