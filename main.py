@@ -1,15 +1,15 @@
 import os
 import uvicorn
 
-from app.app import app
-
 if __name__ == "__main__":
-    port = int(os.getenv("APP_PORT", "8000"))
-
+    PORT = int(os.getenv("APP_PORT", "8000"))
+    UVICORN_WORKERS = int(os.getenv("UVICORN_WORKERS", "4"))
+    
     uvicorn.run(
-        app,
-        host = "0.0.0.0",
-        port = port,
-        proxy_headers = True,
-        forwarded_allow_ips = "*",
+        "app.app:app"
+        , host = "0.0.0.0"
+        , port = PORT
+        , workers = UVICORN_WORKERS
+        , proxy_headers = True
+        , forwarded_allow_ips = "*"
     )
