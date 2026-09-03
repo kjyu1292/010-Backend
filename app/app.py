@@ -8,8 +8,10 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from contextlib import asynccontextmanager
 
 from app.limiter import limiter
-from app.auth.router import router
 from app.database.core import engine
+from app.auth.router import router as auth_router
+
+from app.players.router import router as players_router
 
 
 """----------------------------"""
@@ -22,7 +24,8 @@ app = FastAPI(lifespan = lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-app.include_router(router, prefix = "/v1")
+app.include_router(auth_router, prefix = "/v1")
+app.include_router(players_router, prefix = "/v1")
 
 """----------------------------"""
 @app.get("/health", tags = ["health"])
