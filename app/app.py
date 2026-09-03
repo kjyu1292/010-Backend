@@ -10,7 +10,6 @@ from contextlib import asynccontextmanager
 from app.limiter import limiter
 from app.database.core import engine
 from app.auth.router import router as auth_router
-
 from app.players.router import router as players_router
 
 
