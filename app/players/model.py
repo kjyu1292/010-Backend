@@ -1,6 +1,6 @@
 """----------------------------"""
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 """----------------------------"""
@@ -11,10 +11,7 @@ class PlayerProfileResponse(BaseModel):
     soft_currency: int
     hard_currency: int
     avatar_id: str | None = None
-
-    class Config:
-        from_attributes = True
-
+    model_config: ConfigDict = ConfigDict(from_attributes = True)
 
 class PlayerProfileUpdate(BaseModel):
     # The ONLY client-writable field.

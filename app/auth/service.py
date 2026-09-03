@@ -2,6 +2,7 @@
 import os
 import hashlib
 import secrets
+import asyncio
 from uuid import UUID
 from typing import Annotated
 from datetime import timedelta, datetime, timezone
@@ -47,6 +48,8 @@ logger = get_logger("__name__")
 
 
 """----------------------------"""
+# It's pointless to add async prefix def here since they are just wrapper
+# Import asyncio to spawn a thread pool within the running Python process
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt_context.verify(plain_password, hashed_password)
 
@@ -66,12 +69,19 @@ async def authenticate_user(
 ) -> User | None:
     result = await session.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()
-    if not user or not verify_password(password, user.hashed_password):
+    if not user:
+        logger.warning(f"Failed authenticate for user, no user {email}")
+        return None
+
+    password_ok = await asyncio.to_thread(verify_password, password, user.hashed_password)
+    if not password_ok:
         logger.warning(f"Failed authenticate for user {email}")
         return None
+
     if not user.is_active:
         logger.warning(f"Failed authenticate for inactive user {email}")
         return None
+
     return user
 
 async def register_user(
@@ -82,6 +92,8 @@ async def register_user(
     if existing.scalar_one_or_none() is not None:
         logger.info(f"Registration rejected, duplicated email {payload.email}")
         raise HTTPException(status.HTTP_409_CONFLICT, "Email already registered")
+
+    hashed_password = await asyncio.to_thread(get_password_hash, payload.password)
 
     user = User(
         email = payload.email

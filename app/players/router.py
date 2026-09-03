@@ -9,7 +9,7 @@ from app.players.model import PlayerProfileResponse, PlayerProfileUpdate
 
 
 """----------------------------"""
-router = APIRouter(prefix="/v1/players", tags=["players"])
+router = APIRouter(prefix="/players", tags=["players"])
 
 
 """----------------------------"""
