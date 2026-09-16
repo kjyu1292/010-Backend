@@ -16,5 +16,6 @@ scripts/
 .env.*
 *.override.yml
 *.txt
+*.swp
 sketch.MD
 
