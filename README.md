@@ -107,7 +107,7 @@ being available. E2e and load tests need the real stack running first
 ## Performance
 
 Baseline load testing and the resulting investigation are documented in
-[`PERF_LOG_2026-09-03_preliminary-sweep.md`](./PERF_LOG_2026-09-03_preliminary-sweep.md).
+[`PERF_LOG_2026-09-03_preliminary-sweep.md`](./tests/load/PERFLOG_260903_preliminarySweep.md).
 
 Current state: `players/me` (GET/PATCH) and `auth/me` pass their latency
 thresholds. `register`/`login` remain above threshold — confirmed to be
