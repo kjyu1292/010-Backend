@@ -20,19 +20,23 @@ from app.entities.user import User
 
 """----------------------------"""
 DATABASE_URL = os.getenv("DATABASE_URL")
-if DATABASE_URL is None:
+POOL_SIZE = int(os.getenv("POOL_SIZE"))
+MAX_OVERFLOW = int(os.getenv("MAX_OVERFLOW"))
+if  ( (DATABASE_URL is None)
+    | (POOL_SIZE is None)
+    | (MAX_OVERFLOW is None)):
     raise RuntimeError(
-            f"DATABASE_URL is not set in {env_file.name}"
+            f"DATABASE_URL, POOL_SIZE, MAX_OVERFLOW is not set in {env_file.name}"
     )
 
 
 """----------------------------"""
 engine = create_async_engine(
         DATABASE_URL
-        , pool_size = 5
-        , max_overflow = 10
+        , pool_size = POOL_SIZE
+        , max_overflow = MAX_OVERFLOW
         , pool_timeout = 30
-        , echo_pool = "debug"
+        # , echo_pool = "debug"
 )
 asyncSessionLocal = async_sessionmaker(
         bind = engine
